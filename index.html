@@ -13,63 +13,74 @@
 <body>
   <div class="container">
     <h1>Star Notary</h1>
-
+    <fieldset>
+      <legend><h3>Star</h3></legend>
+      <div class="row">
+          <label class="bold">Star Name:</label>      
+          <input type="text" id="starName" name="starName" />
+        </div>
+    
+        <div class="row">
+          <label class="bold">Star Story:</label>      
+          <input type="text" id="starStory" name="starStory" />
+        </div>
+        
+        <h3>Star Coordinators</h3>
+        <div class="row">
+          <label class="bold">Dec:</label>      
+          <input type="text" id="starDec" name="starDec" />
+        </div>
+        <div class="row">
+          <label class="bold">Mag:</label>      
+          <input type="text" id="starMag" name="starMag" />
+        </div>
+        <div class="row">
+          <label class="bold">Cent:</label>      
+          <input type="text" id="starCent" name="starCent" />
+        </div>    
+        <div class="row">
+            <label class="bold">TokenId:</label>      
+            <input type="text" id="starTokenId" name="starTokenId" />
+          </div>
+          <button id="claim-button" onclick="claimButtonClicked()">Claim Star</button>    
+    </fieldset>  
+    
+    <fieldset>
+    <legend> <h3>Lookup Star By TokenId</h3></legend>
     <div class="row">
-      <label class="bold">Star Name:</label>      
-      <input type="text" id="starName" name="starName" />
-    </div>
-
-    <div class="row">
-      <label class="bold">Star Story:</label>      
-      <input type="text" id="starStory" name="starStory" />
-    </div>
-    <hr/><hr/>
-    <h3>Star Coordinates</h3>
-    <div class="row">
-      <label class="bold">Dec:</label>      
-      <input type="text" id="starDec" name="starDec" />
-    </div>
-    <div class="row">
-      <label class="bold">Mag:</label>      
-      <input type="text" id="starMag" name="starMag" />
-    </div>
-    <div class="row">
-      <label class="bold">Cent:</label>      
-      <input type="text" id="starCent" name="starCent" />
-    </div>    
-    <hr/><hr/>
-    <div class="row">
-      <label class="bold">TokenId:</label>      
-      <input type="text" id="starTokenId" name="starTokenId" />
-    </div>
-    <button id="claim-button" onclick="claimButtonClicked()">Claim Star</button>    
-    <button id="lookupStarById-button" onclick="lookupStarByIdButtonClicked()">Lookup Star By Id</button>
-
-    <hr/><hr/>
-    <h1>Results</h1>
-
-    <div class="row">
-      <label class="bold">Star Name:</label>
-      <label id="star-name"></label>      
-    </div>
-
-    <div class="row">
-      <label class="bold">Star Story:</label>
-      <label id="star-story"></label>      
-    </div>    
-    <div class="row">
-      <label class="bold">Dec:</label>
-      <label id="star-dec"></label>      
-    </div>
-    <div class="row">
-      <label class="bold">Mag:</label>
-      <label id="star-mag"></label>      
-    </div>
-    <div class="row">
-      <label class="bold">Cent:</label>
-      <label id="star-cent"></label>      
-    </div>        
-  </div>
+        <label class="bold">TokenId:</label>      
+        <input type="text" id="lookupStarTokenId" name="lookupStarTokenId" />
+      </div>
+      <button id="lookupStarById-button" onclick="lookupStarByIdButtonClicked()">Lookup Star By Id</button>
+  
+    </fieldset>
+   
+    
+    <fieldset>
+        <legend> <h3>Results</h3></legend>
+        <div class="row">
+            <label class="bold">Star Name:</label>
+            <label id="star-name"></label>      
+          </div>
+      
+          <div class="row">
+            <label class="bold">Star Story:</label>
+            <label id="star-story"></label>      
+          </div>    
+          <div class="row">
+            <label class="bold">Dec:</label>
+            <label id="star-dec"></label>      
+          </div>
+          <div class="row">
+            <label class="bold">Mag:</label>
+            <label id="star-mag"></label>      
+          </div>
+          <div class="row">
+            <label class="bold">Cent:</label>
+            <label id="star-cent"></label>      
+          </div>        
+        </div>
+    </fieldset>    
 
   <script>
     if (typeof web3 != 'undefined') {
@@ -587,7 +598,7 @@
         let cent = document.getElementById("starCent").value; //"392.155";
         let tokenId = parseInt(document.getElementById("starTokenId").value);
 
-        starNotary.createStar(name, story, dec, mag, cent, tokenId, function (error, result) {
+        starNotary.createStar(name, story, dec, mag, cent, tokenId, {"from": account, "gasPrice": 0}, function (error, result) {
 
           if (!error) {
 
@@ -623,7 +634,7 @@
           return
         }
         var account = accounts[0]
-        let tokenId = parseInt(document.getElementById("starTokenId").value);
+        let tokenId = parseInt(document.getElementById("lookupStarTokenId").value);
 
         starNotary.tokenIdToStarInfo(tokenId, function (error, result) {
 

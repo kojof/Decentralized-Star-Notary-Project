@@ -13,18 +13,25 @@ contract('StarNotary', accounts => {
             let story ="I love my wonderful star"; 
             let dec ="121.874";
             let mag ="245.978";
-            let cent ="032.155";
-           let tokenId = 1;
+            let cent ="032.1552";
+            let tokenId = 1;          
 
-            var createStarEvent  = await this.contract.createStar(name, story, dec, mag, cent, tokenId,  {from: accounts[0]});
+           let starCoordinates = dec +  mag + cent;
+           let starCoordinatesBytes = web3.sha3(starCoordinates);
+            
+           //check if star exists, otherwise don't save it
+           let checkIfStarExists = await this.contract.checkIfStarExist(starCoordinatesBytes);
+           assert.equal(checkIfStarExists, true);   
+
+            const createStarEvent  = await this.contract.createStar(name, story, dec, mag, cent, tokenId,  {from: accounts[0]});
             assert.equal(createStarEvent.logs[1].event,'starCreated');
 
-            let star = await this.contract.tokenIdToStarInfo(tokenId);            
-            assert.equal(star[0], name);       
-            assert.equal(star[1], story); 
-            assert.equal(star[2], `ra_${cent}`); 
-            assert.equal(star[3], `dec_${dec}`); 
-            assert.equal(star[4], `mag_${mag}`);          
+            let star = await this.contract.tokenIdToStarInfo(tokenId);  
+            assert.deepEqual(star, [name, story, `ra_${cent}`, `dec_${dec}`, `mag_${mag}`]);   
+            
+            //check again if the star exists after it has been created
+            let checkIfStarExistsAgain = await this.contract.checkIfStarExist(starCoordinatesBytes);           
+            assert.equal(checkIfStarExistsAgain, false);                 
         })
     })
 
