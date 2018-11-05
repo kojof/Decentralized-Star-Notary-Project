@@ -1,1 +1,0 @@
-# Decentralized-Star-Notary-Project
